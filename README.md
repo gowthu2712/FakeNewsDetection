@@ -39,6 +39,7 @@ Fig.3 Relevance scores for Fake and Real News
 ![Centering Resonance analysis for fake news](https://github.com/gowthu2712/FakeNewsDetection/blob/master/network_false.png "Fig.4 Centering Resonance analysis for fake news")
 Fig.4 Centering Resonance analysis for fake news
 ![Centering Resonance analysis for true news](https://github.com/gowthu2712/FakeNewsDetection/blob/master/network_true.png "Fig.5 Centering Resonance analysis for true news")
+
 Fig.5 Centering Resonance analysis for true news
 
 Fig.4 and Fig.5 show a networkX model of the fake and real news snippets. As we can see these graphs are densely connected which shows that a bi-gram model could work well in this classification task. These networks are generated using a technique called centering resonance analysis, a type of network based text analysis which represents the content of large data sets by identifying the most important words that link other words. In these two figures we have included only sentences with the word "President" to have close look at the edge distribution of the network. 
