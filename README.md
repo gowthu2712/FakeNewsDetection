@@ -27,14 +27,19 @@ After the preprocessing phase, exploratory analysis of the data was done. We ini
 
 ![Fake word cloud](https://github.com/gowthu2712/FakeNewsDetection/blob/master/fake_word_cloud.png "Fig.1 Fake word cloud")
 Fig.1 Fake word cloud
+
 ![True word cloud](https://github.com/gowthu2712/FakeNewsDetection/blob/master/true_word_cloud.png "Fig.2 True word cloud")
+Fig.2 True word cloud
 
 
 As we stated in the previous section, most of the existing work on fake news detection concentrates on the syntactic and semantic features of the content. While in the real world we could have a fake news well disguised under the features of a real news. A trivial predictor would miss out on identifying such fake contents. So we have tried to use a new feature where we measure the current relevance of the given news snippet. We are doing this by finding the Jaccard similarity between the given news and the results from a Bing search. For this purpose, we scrapped data from Bing search query results using Beautiful Soup. We hypothesized that true news articles will have a higher similarity while the fake articles will have low similarity. As a proof of correctness we tested our hypothesis on a small set of 20 fake news snippets and 20 true news snippets and found that the results support our hypothesis as shown in Fig.3(here the blue bubbles are fake news and red bubbles are true news).
 
 ![Relevance scores for Fake and Real News](https://github.com/gowthu2712/FakeNewsDetection/blob/master/ors.png "Fig.3 Relevance scores for Fake and Real News")
+Fig.3 Relevance scores for Fake and Real News
 ![Centering Resonance analysis for fake news](https://github.com/gowthu2712/FakeNewsDetection/blob/master/network_false.png "Fig.4 Centering Resonance analysis for fake news")
+Fig.4 Centering Resonance analysis for fake news
 ![Centering Resonance analysis for true news](https://github.com/gowthu2712/FakeNewsDetection/blob/master/network_true.png "Fig.5 Centering Resonance analysis for true news")
+Fig.5 Centering Resonance analysis for true news
 
 Fig.4 and Fig.5 show a networkX model of the fake and real news snippets. As we can see these graphs are densely connected which shows that a bi-gram model could work well in this classification task. These networks are generated using a technique called centering resonance analysis, a type of network based text analysis which represents the content of large data sets by identifying the most important words that link other words. In these two figures we have included only sentences with the word "President" to have close look at the edge distribution of the network. 
 
@@ -44,5 +49,20 @@ We also wanted to find the correlation between the sentiment of the news article
 |----------|----------|----------|---------|
 |True News |  0.0543  |  0.0516  |  0.8792 |
 |Fake News |  0.0664  |  0.0571  |  0.8710 |
+
+### MODEL
+For the fake news classification task, we consider two important classes of features: textual features and credibility of the news article using Online Relevance Score (ORS).
+
+**1) SVM CLASSIFIER**
+
+A SVM classifier with RBF kernel was applied to this problem for the classification task. The general formula for a soft SVM is listed in the following 3 equations.
+
+![](http://www.sciweavers.org/tex2img.php?eq=PRIMALmin_%7Bw%5Cepsilon%20R%5E%7Bp%7D%2Cb%5Cepsilon%20R%2C%5Cxi%5Cepsilon%20R%5E%7Bn%7D%7D%5Cfrac%7B1%7D%7B2%7D%7C%7Cw%7C%7C%5E%7B2%7D%2BC%5Csum_%7Bi%3D1%7D%5E%7Bn%7D%5Cxi%0Ay%5E%7B%5Cleft%28i%5Cright%29%7D%5Cleft%28w.x%5E%7B%5Cleft%28i%5Cright%29%7D%2Bb%5Cright%29%5Cgeq1-%5Cxi_%7Bi%7D%20%2F%2Fx&bc=White&fc=Black&im=jpg&fs=12&ff=arev&edit=0)
+![](http://www.sciweavers.org/tex2img.php?eq=Constraint%201-y%5E%7B%5Cleft%28i%5Cright%29%7D%5Cleft%28w.x%5E%7B%5Cleft%28i%5Cright%29%7D%2Bb%5Cright%29%5Cgeq1-%5Cxi_%7Bi%7D&bc=White&fc=Black&im=jpg&fs=12&ff=arev&edit=0)
+![](http://www.sciweavers.org/tex2img.php?eq=Constraint%202%20-%20%5Cxi%3E0&bc=White&fc=Black&im=jpg&fs=12&ff=arev&edit=0)
+
+The slack variable for soft SVM (C) was set at 100 in order to improve generalization of the model. The gamma parameter of the RBF kernel was set to a relatively low value (0.001) as our data set is one with high variance. Intuitively we expect the SVM to have a high spread influence. 
+
+The kernel trick (dot product in the dual of the SVM) enables us to exploit the RBF kernel which is capable of building the classifier in an infinite dimensional space.
 
 
